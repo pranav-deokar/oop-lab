@@ -1,159 +1,86 @@
 #include<iostream>
-#include<cstring>
 using namespace std;
+int rno;
 
-class student {
-protected:
-    int roll;
-    string prn, name;
-
+class person
+{
 public:
-    void accept() {
-        cout << "Enter student roll number: ";
-        cin >> roll;
-        cout << "Enter PRN: ";
-        cin >> prn;
-        cout << "Enter name of the student: ";
-        cin >> name;
-    }
-
-    void displayStudent() {
-        cout << roll << "\t" << prn << "\t" << name << "\t";
-    }
+string des,name;
+int id,sal;
+virtual void accept()=0;
+virtual void display()=0;  
 };
 
-class test : virtual public student {
-protected:
-    int c1[5], c2[5], e1[5];  
-    string sub[5];            
-
+class doctor: public person
+{
 public:
-    void acceptTest() {
-        for (int i = 0; i < 5; i++) {
-            cout << "Enter name of subject " << (i+1) << ": ";
-            cin >> sub[i];
-
-            cout << "Enter CIA1 marks for " << sub[i] << " (/20): ";
-            cin >> c1[i];
-
-            cout << "Enter CIA2 marks for " << sub[i] << " (/20): ";
-            cin >> c2[i];
-
-            cout << "Enter Endsem marks for " << sub[i] << " (/60): ";
-            cin >> e1[i];
-        }
-    }
-
-    void displayTest(int i) {
-        int total = c1[i] + c2[i] + e1[i];
-        string result;
-
-        if (total < 30) {
-            result = "FAIL";
-        } else {
-            result = "PASS";
-        }
-
-        cout << sub[i] << "\t" << c1[i] << "\t" << c2[i] << "\t" << e1[i] << "\t" << result << "\t";
-    }
+void accept();
+void display();
 };
 
-class sport : virtual public student {
-protected:
-    string grade;
-
+class nurse: public person
+{
 public:
-    void acceptSport() {
-        cout << "Enter sport grade: ";
-        cin >> grade;
-    }
-
-    void displaySport() {
-        cout << grade;
-    }
+void accept();
+void display();
 };
 
-class result : public test, public sport {
+class astaff:public person
+{
 public:
-    void acceptDetails() {
-        accept();        
-        acceptTest();    
-        acceptSport();   
-    }
 
-    void displayResult() {
-        displayStudent();
-        for (int i = 0; i < 5; i++) {
-            if (i != 0) { 
-                cout << "\t\t\t";
-            }
-            displayTest(i);
-            if (i == 0) {
-                displaySport(); 
-            }
-            cout << endl;
-        }
-    }
+void accept();
+void display();
 };
 
-int main() {
-    int n, ch;
-    result r[10];  
+void doctor::accept()
+{
+    cout<<"\n enter the Id,Name, Designation And Salary";
+    cin>>id>>name>>des>>sal;
+}
 
-    do {
-        cout << "\nMenu:";
-        cout << "\n1. Accept Student Details";
-        cout << "\n2. Display Student Details";
-        cout << "\n3. Display Test Results";
-        cout << "\n4. Display Sport Grade";
-        cout << "\n5. Exit";
-        cout << "\nEnter your choice: ";
-        cin >> ch;
+void nurse::accept()
+{
+    cout<<"\n enter the Id,Name, Designation And Salary";
+    cin>>id>>name>>des>>sal;
+}
 
-        switch (ch) {
-        case 1:
-            cout << "Enter the number of students: ";
-            cin >> n;
-            for (int i = 0; i < n; i++) {
-                cout << "\n Enter details for student " << (i + 1) << endl;
-                r[i].acceptDetails();  
-            }
-            break;
+void astaff::accept()
+{
+    cout<<"\n enter the Id,Name, Designation And salary";
+    cin>>id>>name>>des>>sal;
+    
+}
 
-        case 2:
-            cout << "\nRoll\tPRN\tName" << endl;
-            for (int i = 0; i < n; i++) {
-                r[i].displayStudent();  
-                cout << endl;
-            }
-            break;
+void doctor::display()
+{
+    cout<<id<<"\n"<<name<<"\n"<<des<<"\n"<<sal<<"\n";
+}
 
-        case 3:
-            cout << "\nRoll\tPRN\tName\tSubject\tCIA1\tCIA2\tEndsem\tResult\tSport Grade" << endl;
-            
-            for (int i = 0; i < n; i++) {
-                r[i].displayResult();  
-            }
-            break;
+void nurse::display()
+{
+    cout<<id<<"\n"<<name<<"\n"<<des<<"\n"<<sal<<"\n";
+}
 
-        case 4:
-            cout << "\nRoll\tPRN\tName\tSport Grade" << endl;
-            
-            for (int i = 0; i < n; i++) {
-                r[i].displayStudent();        
-                r[i].displaySport();   
-                cout << endl;
-            }
-            break;
+void astaff::display()
+{
+    cout<<id<<"\n"<<name<<"\n"<<des<<"\n"<<sal<<"\n";
+}
 
-        case 5:
-            cout << "Exiting program." << endl;
-            break;
+int main()
+{
+    doctor d;
+    astaff p;
+    nurse s;
 
-        default:
-            cout << "Invalid choice, please try again." << endl;
-        }
-    } while (ch != 5);
+    d.accept();
+    d.display();
 
-   return 0;
+    s.accept();
+    s.display();
+
+    p.accept();
+    p.display();
+
+ return 0;
 }
