@@ -1,123 +1,160 @@
-#include <iostream>
+
+#include<iostream>
+#include<cstring>
 using namespace std;
 
-class Complex
-{
-private:
-    float real, img;
+class student {
+protected:
+    int roll;
+    string prn, name;
 
 public:
-    Complex()
-    {
-        real = 0;
-        img = 0;
-    }
-    void accept()
-    {
-        cout << "Real: ";
-        cin >> real;
-        cout << "Imaginary: ";
-        cin >> img;
-    }
-    void display()
-    {
-        cout << "Complex number is: ";
-        cout << real << "+" << img << "i" << "\n";
-    }
-    Complex(float a, float b)
-    {
-        real = a;
-        img = b;
-    }
-    friend Complex operator+(Complex c1, Complex c2)
-    {
-        c1.real = c1.real + c2.real;
-        c1.img = c1.img + c2.img;
-        return c1;
+    void accept() {
+        cout << "Enter student roll number: ";
+        cin >> roll;
+        cout << "Enter PRN: ";
+        cin >> prn;
+        cout << "Enter name of the student: ";
+        cin >> name;
     }
 
-    friend Complex operator-(Complex c1, Complex c2)
-    {
-        c1.real = c1.real - c2.real;
-        c1.img = c1.img - c2.img;
-        return c1;
+    void displayStudent() {
+        cout << roll << "\t" << prn << "\t" << name << "\t";
     }
-    Complex operator*(Complex c2);
-    Complex operator/(Complex c2);
 };
 
-Complex Complex::operator*(Complex c2)
-{
-    Complex c3;
-    c3.real = (real * c2.real) - (img * c2.img);
-    c3.img = (real * c2.img) + (img * c2.real);
-    return c3;
-}
+class test : virtual public student {
+protected:
+    int c1[5], c2[5], e1[5];  
+    string sub[5];            
 
-Complex Complex::operator/(Complex c2)
-{
-    Complex c3;
-    c3.real = ((real * c2.real) + (img * c2.img)) / ((c2.real * c2.real) + (c2.img * c2.img));
-    c3.img = ((img * c2.real) - (real * c2.img)) / ((c2.real * c2.real) + (c2.img * c2.img));
-    return c3;
-}
+public:
+    void acceptTest() {
+        for (int i = 0; i < 5; i++) {
+            cout << "Enter name of subject " << (i+1) << ": ";
+            cin >> sub[i];
 
-int main()
-{
-    int ch;
-    Complex c3;
-    Complex c4;
-    Complex c5;
+            cout << "Enter CIA1 marks for " << sub[i] << " (/20): ";
+            cin >> c1[i];
 
-    cout << "Enter the first complex number:\n";
-    c4.accept();
-    cout << "Enter the second complex number:\n";
-    c5.accept();
-    cout << "1st ";
-    c4.display();
-    cout << "\n";
-    cout << "2nd ";
-    c5.display();
-    cout << "\n";
+            cout << "Enter CIA2 marks for " << sub[i] << " (/20): ";
+            cin >> c2[i];
 
-    do
-    {
-        cout << "\n1. Addition" << "\n"
-             << "2. Subtraction" << "\n"
-             << "3. Multiplication" << "\n"
-             << "4. Division" << "\n";
+            cout << "Enter Endsem marks for " << sub[i] << " (/60): ";
+            cin >> e1[i];
+        }
+    }
+
+    void displayTest(int i) {
+        int total = c1[i] + c2[i] + e1[i];
+        string result;
+
+        if (total < 30) {
+            result = "FAIL";
+        } else {
+            result = "PASS";
+        }
+
+        cout << sub[i] << "\t" << c1[i] << "\t" << c2[i] << "\t" << e1[i] << "\t" << result << "\t";
+    }
+};
+
+class sport : virtual public student {
+protected:
+    string grade;
+
+public:
+    void acceptSport() {
+        cout << "Enter sport grade: ";
+        cin >> grade;
+    }
+
+    void displaySport() {
+        cout << grade;
+    }
+};
+
+class result : public test, public sport {
+public:
+    void acceptDetails() {
+        accept();        
+        acceptTest();    
+        acceptSport();   
+    }
+
+    void displayResult() {
+        displayStudent();
+        for (int i = 0; i < 5; i++) {
+            if (i != 0) { 
+                cout << "\t\t\t";
+            }
+            displayTest(i);
+            if (i == 0) {
+                displaySport(); 
+            }
+            cout << endl;
+        }
+    }
+};
+
+int main() {
+    int n, ch;
+    result r[10];  
+
+    do {
+        cout << "\nMenu:";
+        cout << "\n1. Accept Student Details";
+        cout << "\n2. Display Student Details";
+        cout << "\n3. Display Test Results";
+        cout << "\n4. Display Sport Grade";
+        cout << "\n5. Exit";
         cout << "\nEnter your choice: ";
         cin >> ch;
 
-        switch (ch)
-        {
+        switch (ch) {
         case 1:
-            cout << "Addition: ";
-            c3 = operator+(c4, c5);
-            c3.display();
-            cout << "\n";
+            cout << "Enter the number of students: ";
+            cin >> n;
+            for (int i = 0; i < n; i++) {
+                cout << "\n Enter details for student " << (i + 1) << endl;
+                r[i].acceptDetails();  
+            }
             break;
+
         case 2:
-            cout << "Subtraction: ";
-            c3 = operator-(c4, c5);
-            c3.display();
-            cout << "\n";
+            cout << "\nRoll\tPRN\tName" << endl;
+            for (int i = 0; i < n; i++) {
+                r[i].displayStudent();  
+                cout << endl;
+            }
             break;
+
         case 3:
-            cout << "Multiplication: ";
-            c3 = c4 * c5;
-            c3.display();
-            cout << "\n";
+            cout << "\nRoll\tPRN\tName\tSubject\tCIA1\tCIA2\tEndsem\tResult\tSport Grade" << endl;
+            
+            for (int i = 0; i < n; i++) {
+                r[i].displayResult();  
+            }
             break;
+
         case 4:
-            cout << "Division:";
-            c3 = c4.operator/(c5);
-            c3.display();
-            cout << "\n";
+            cout << "\nRoll\tPRN\tName\tSport Grade" << endl;
+            
+            for (int i = 0; i < n; i++) {
+                r[i].displayStudent();        
+                r[i].displaySport();   
+                cout << endl;
+            }
             break;
+
+        case 5:
+            cout << "Exiting program." << endl;
+            break;
+
         default:
-            cout << "EXIT";
+            cout << "Invalid choice, please try again." << endl;
         }
-    } while (ch <= 4);
-    return 0;
+    } while (ch != 5);
+
+   return 0;
 }
